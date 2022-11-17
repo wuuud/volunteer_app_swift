@@ -2,8 +2,10 @@
 //  SceneDelegate.swift
 //  VolunteerApp
 //
-//  Created by H M on 2022/11/04.
+//  Created by H M on 2022/11/15.
 //
+
+//import Foundation
 
 import UIKit
 
@@ -49,4 +51,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
 }
+
 
