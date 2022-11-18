@@ -19,10 +19,11 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        let keychain = Keychain(service: consts.service)
-        //        if keychain["access_token"] != nil {
-        //            keychain["access_token"] = nil //keychainに保存されたtokenを削除
-        //        }
+        //        アプリ起動時にキーチェーンに保存したアクセストークンを削除したい。認証の確認等)にコメントアウトを解除。
+        let keychain = Keychain(service: consts.service)
+        //if keychain["access_token"] != nil {
+        keychain["access_token"] = nil //keychainに保存されたtokenを削除
+        //}
     }
     
     //7.oauth認証
@@ -74,7 +75,7 @@ class LoginViewController: UIViewController {
                 guard error == nil, let successURL = callback else { return }
                 let queryItems = URLComponents(string: successURL.absoluteString)?.queryItems
                 guard let code = queryItems?.filter({ $0.name == "code" }).first?.value else { return }
-                self.getAccessToken(code: code) //func getAccessToken(code: String) にて取得したcodeでアクセストークンをリクエスト
+                self.getAccessToken(code: code)
             }
         }
         //7.oauth認証
@@ -84,6 +85,7 @@ class LoginViewController: UIViewController {
         session?.prefersEphemeralWebBrowserSession = true
         session?.start()  //セッションの開始(これがないと認証できない)
     }
+    
     //次の画面に遷移する処理 ナビゲーションバーが自動で付き、ナビゲーションバーに戻るためのボタンも自動についた一覧画面(IndexViewController)を表示
     //アクセストークンを取得して保存までできた時や、アクセストークンをすでに持っていた時
     func transitionToIndex() {

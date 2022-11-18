@@ -16,7 +16,7 @@ class IndexViewController: UIViewController {
     let sectionTitle = ["ボランティア一覧"]
     private var token = ""
     //APIのレスポンスから取り出した値を入れておく変数を追加
-    var volunteerOffers: [volunteerOffer] = []
+    var volunteerOffers: [VolunteerOffer] = []
     var user: User!
     
     @IBOutlet weak var volunteerOfferTableView: UITableView!

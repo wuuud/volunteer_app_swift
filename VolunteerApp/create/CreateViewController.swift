@@ -18,11 +18,12 @@ class CreateViewController: UIViewController {
     
     // タップしたときの画像
     @IBAction func selectImage(_ sender: UITapGestureRecognizer) {
+        selectionAlert()
     }
     //公開ボタン
     @IBAction func postVolunteerOffer(_ sender: Any) {
-        if titleTextField.text != "" && descriptionTextView.text != "" && imageView.image != nil {
-            createRequest(token: token, image: imageView.image!)
+        if titleTextField.text != "" && descriptionTextView.text != "" && npoImageView.image != nil {
+            createRequest(token: token, image: npoImageView.image!)
         } else {
             okAlert.showOkAlert(title: "未入力欄があります", message: "全ての欄を入力してください", viewController: self)
         }
@@ -35,13 +36,9 @@ class CreateViewController: UIViewController {
     //            okAlert.showOkAlert(title: "未入力欄があります", message: "全ての欄を入力してください", viewController: self)
     //    }
     
-    
-    
-    
-    //要修正
     @IBOutlet weak var titleTextField: UILabel!
     @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var npoImageView: UIImageView!
     
     //viewDidLoad()に一度だけ実行したい処理を書く
     override func viewDidLoad() {
@@ -51,21 +48,20 @@ class CreateViewController: UIViewController {
         //TextViewとImageViewに枠線をつける
         let viewCustomize = ViewCustomize()
         descriptionTextView = viewCustomize.addBoundsTextView(textView: descriptionTextView)
-        imageView = viewCustomize.addBoundsImageView(imageView: imageView)
+        npoImageView = viewCustomize.addBoundsImageView(imageView: npoImageView)
         titleTextField = viewCustomize.addBoundsLabel(label: titleTextField)
     }
     //カメラがあったら起動
     func checkCamera() {
-        let sourceType:UIImagePickerController.SourceType = .camera
-        let cameraPicker = UIImagePickerController()
-        if UIImagePickerController.isSourceTypeAvailable(.camera){
-            cameraPicker.allowsEditing = true
-            cameraPicker.sourceType = sourceType
-            cameraPicker.delegate = self
-            self.present(cameraPicker, animated: true,completion: nil)
+            let sourceType:UIImagePickerController.SourceType = .camera
+            let cameraPicker = UIImagePickerController()
+            if UIImagePickerController.isSourceTypeAvailable(.camera){
+                cameraPicker.allowsEditing = true
+                cameraPicker.sourceType = sourceType
+                cameraPicker.delegate = self
+                self.present(cameraPicker, animated: true,completion: nil)
+            }
         }
-    }
-    
     //フォトライブラリがあったら起動
     func checkAlbum() {
         let sourceType:UIImagePickerController.SourceType = .photoLibrary
@@ -86,9 +82,7 @@ class CreateViewController: UIViewController {
         let albamAction = UIAlertAction(title: "アルバム", style: .default) { (alert) in
             self.checkAlbum()
         }
-        
         let cancelAction = UIAlertAction(title: "キャンセル", style: .cancel)
-        
         alertController.addAction(cameraAction)
         alertController.addAction(albamAction)
         alertController.addAction(cancelAction)
@@ -128,7 +122,7 @@ class CreateViewController: UIViewController {
             case .success:
                 print("🍏success from Create🍏")
                 //alert
-                self.createAlart(title: "投稿完了!", message: "作成した記事を投稿しました")
+                self.createAlart(title: "公開完了!", message: "ボランティア情報を公開しました")
             case .failure(let err):
                 print(err)
                 self.okAlert.showOkAlert(title: "エラー!", message: "\(err)", viewController: self)
@@ -156,7 +150,7 @@ extension CreateViewController: UIImagePickerControllerDelegate, UINavigationCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if info[.originalImage] as? UIImage != nil{
             let selectedImage = info[.originalImage] as! UIImage
-            imageView.image = selectedImage
+            npoImageView.image = selectedImage
             picker.dismiss(animated: true, completion: nil)
         }
     }

@@ -9,7 +9,7 @@
 //8.index
 import Foundation
 
-struct volunteerOffer: Codable {
+struct VolunteerOffer: Codable {
     let id: Int
     let title: String
     let description: String
@@ -17,7 +17,6 @@ struct volunteerOffer: Codable {
     let npoName: String
     let npoImageUrl: String
     let isPublished: String
-    //    let messages: [Message]?
     
     enum CodingKeys:  String, CodingKey {
         case id

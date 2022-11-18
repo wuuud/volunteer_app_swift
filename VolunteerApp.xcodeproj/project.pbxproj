@@ -140,7 +140,6 @@
 		4CA967652921C739006CB155 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4CC2DA882922FB0B00BF01B8 /* User.swift */,
 				4CC2DA8C2922FB5F00BF01B8 /* LoadToken.swift */,
 				4CC2DA962923161F00BF01B8 /* OkAlert.swift */,
 				4CC2DA982923166100BF01B8 /* ViewCustomize.swift */,
@@ -152,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				4CA967612920E925006CB155 /* IndexViewController.swift */,
+				4CC2DA882922FB0B00BF01B8 /* User.swift */,
 				4CC2DA862922FB0000BF01B8 /* VolunteerOffer.swift */,
 				4CA967632920E96C006CB155 /* VolunteerOfferTableViewCell.swift */,
 				4CA9675F2920DF0F006CB155 /* GetToken.swift */,

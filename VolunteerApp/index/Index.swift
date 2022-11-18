@@ -9,7 +9,7 @@ import Foundation
 
 
 struct Index: Codable {
-    let data: [volunteerOffer]?  //nilをチェック  ？
+    let data: [VolunteerOffer]?  //nilをチェック  ？
 }
 
 struct ApplicationIndex: Codable {
