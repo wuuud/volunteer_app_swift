@@ -11,4 +11,16 @@ import Foundation
 struct User: Codable {
     let id: Int
     let name: String
+    let npoName: String
+    let npo: Npo
+
+
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case npoName = "npo_name"
+        case npo
+
+    }
 }

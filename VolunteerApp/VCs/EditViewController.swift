@@ -20,9 +20,10 @@ class EditViewController: UIViewController {
     private var token = ""
     let consts = Constants.shared
     let okAlert = OkAlert()
+    let messageSectionName = ["ボランティア編集"] 
     
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleTextView: UITextField!
     @IBOutlet weak var npoImageView: UIImageView!
     @IBOutlet weak var descriptionTextView: UITextView!
     //ImageViewがタップされたときの処理
@@ -32,7 +33,7 @@ class EditViewController: UIViewController {
     
     //Update(更新)ボタン
     @IBAction func updateButton(_ sender: Any) {
-        if titleLabel.text != "" && descriptionTextView.text != "" && npoImageView.image != nil {
+        if titleTextView.text != "" && descriptionTextView.text != "" && npoImageView.image != nil {
             guard let id = volunteerOfferId else { return }
             updateAlert(token: token, image: npoImageView.image!, volunteerOfferId: id)
         } else {
@@ -53,7 +54,6 @@ class EditViewController: UIViewController {
         token = LoadToken().loadAccessToken()
         //枠線
         let viewCustomize = ViewCustomize()
-        titleLabel = viewCustomize.addBoundsLabel(label: titleLabel)
         descriptionTextView = viewCustomize.addBoundsTextView(textView: descriptionTextView)
         npoImageView = viewCustomize.addBoundsImageView(imageView: npoImageView)
         //記事のIDがnilじゃなければ記事を読み込む
@@ -111,7 +111,7 @@ class EditViewController: UIViewController {
         ).responseDecodable(of: VolunteerOffer.self) { response in
             switch response.result {
             case .success(let volunteerOffer):
-                self.titleLabel.text = volunteerOffer.title
+                self.titleTextView.text = volunteerOffer.title
                 self.descriptionTextView.text = volunteerOffer.description
                 self.npoImageView.kf.setImage(with: URL(string: volunteerOffer.npoImageUrl)!)
             case .failure(let error):
@@ -136,7 +136,7 @@ class EditViewController: UIViewController {
                 guard let imageData = image.jpegData(compressionQuality: 0.01) else {return}
                 multipartFormData.append(imageData, withName: "npo", fileName: "file.jpg")
                 
-                guard let titleLabel = self.titleLabel.text?.data(using: .utf8) else {return}
+                guard let titleLabel = self.titleTextView.text?.data(using: .utf8) else {return}
                 multipartFormData.append(titleLabel, withName: "title")
                 
                 guard let descriptionTextView = self.descriptionTextView.text?.data(using: .utf8) else {return}
@@ -213,7 +213,7 @@ class EditViewController: UIViewController {
     }
     //    キーボードを下げる処理
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        titleLabel.resignFirstResponder()
+        titleTextView.resignFirstResponder()
         descriptionTextView.resignFirstResponder()
     }
 }

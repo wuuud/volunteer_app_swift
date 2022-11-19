@@ -75,7 +75,9 @@ class LoginViewController: UIViewController {
                 guard error == nil, let successURL = callback else { return }
                 let queryItems = URLComponents(string: successURL.absoluteString)?.queryItems
                 guard let code = queryItems?.filter({ $0.name == "code" }).first?.value else { return }
+                print(code)
                 self.getAccessToken(code: code)
+                self.transitionToIndex()
             }
         }
         //7.oauth認証

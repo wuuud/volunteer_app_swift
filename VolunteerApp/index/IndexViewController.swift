@@ -23,7 +23,7 @@ class IndexViewController: UIViewController {
     @IBAction func pressedCreateButtton(_ sender: UIBarButtonItem) {
         let createVC = self.storyboard?.instantiateViewController(withIdentifier: "Create") as! CreateViewController
         guard user != nil else { return }
-        //createVC.user = user  //createViewControllerに記載する必要がある
+        createVC.user = user  //createViewControllerに記載する必要がある
         navigationController?.pushViewController(createVC, animated: true)
     }
     
@@ -50,6 +50,7 @@ class IndexViewController: UIViewController {
          "Authorization": "Bearer \(token)",
          ]
          */
+        //        print("ree")
         let headers: HTTPHeaders = [
             .contentType("application/json"),
             .accept("application/json"),
@@ -62,10 +63,12 @@ class IndexViewController: UIViewController {
             method: .get,
             encoding: JSONEncoding.default,
             headers: headers
+            
         ).responseDecodable(of: Index.self) { response in
             switch response.result {
             case .success(let volunteerOffers):
                 print("🔥success from Index🔥")
+                print(response)
                 if let atcls = volunteerOffers.data {
                     self.volunteerOffers = atcls
                     self.volunteerOfferTableView.reloadData()

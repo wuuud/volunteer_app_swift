@@ -25,10 +25,11 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var npoNameLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var npoImageView: UIImageView!
-    @IBOutlet weak var descriptionTextView: UITextView!
+    @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var editAndDeleteButtonState: UIBarButtonItem!
     //編集削除画面へのボタンが押されたときの処理を先に書く
     @IBAction func editOrDeleteButton(_ sender: UIBarButtonItem) {
+        print("aaaR")
         guard let volunteerOfferId = volunteerOfferId else { return }
         let editVC = self.storyboard?.instantiateViewController(withIdentifier: "Edit") as! EditViewController
         editVC.volunteerOfferId = volunteerOfferId
@@ -37,9 +38,8 @@ class DetailViewController: UIViewController {
     
     //要確認
     //    確認のためにviewDidLoad内の次の2行をコメントアウトして遷移できるか確認してみましょう!
-    //
-    //        editAndDeleteButtonState.isEnabled = false
-    //        editAndDeleteButtonState.tintColor = UIColor.clear
+    //            editAndDeleteButtonState.isEnabled = false
+    //            editAndDeleteButtonState.tintColor = UIColor.clear
     //
     
     
@@ -47,14 +47,16 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //ボタンを使えなくして、色を透明にする(見えなくする)
-        editAndDeleteButtonState.isEnabled = false
-        editAndDeleteButtonState.tintColor = UIColor.clear
+//        editAndDeleteButtonState.isEnabled = false
+//        editAndDeleteButtonState.isHidden = false
+//        editAndDeleteButtonState.tintColor = UIColor.clear
+        
         token = LoadToken().loadAccessToken() //トークン読み込み　リクエストの関数を適切なところで実行
         
         //        枠線
         let viewCustomize = ViewCustomize()
         titleLabel = viewCustomize.addBoundsLabel(label: titleLabel)
-        descriptionTextView = viewCustomize.addBoundsTextView(textView: descriptionTextView)
+        descriptionLabel = viewCustomize.addBoundsLabel(label: descriptionLabel)
         npoImageView = viewCustomize.addBoundsImageView(imageView: npoImageView)
     }
     
@@ -74,7 +76,7 @@ class DetailViewController: UIViewController {
         AF.request(
             url,
             headers: headers
-        ).responseDecodable(of: VolunteerOffer.self) { response in
+        ).responseDecodable(of: VolunteerOffer.self) { [self] response in
             switch response.result {
             case .success(let volunteerOffer):
                 print("🌟success from Detail🌟")
@@ -82,15 +84,23 @@ class DetailViewController: UIViewController {
                 //それぞれのラベルやイメージビューに受け取ったものを入れる
                 self.npoNameLabel.text = volunteerOffer.npoName
                 self.titleLabel.text = volunteerOffer.title
-                self.descriptionTextView.text = volunteerOffer.description
+                self.descriptionLabel.text = volunteerOffer.description
                 self.npoImageView.kf.setImage(with: URL(string: volunteerOffer.npoImageUrl)!)
                 
-                //投稿者と自分のnameが一致したとき…
+                //投稿者と自分のnameが一致したとき
+                print(self.myUser.npoName)
+                print(volunteerOffer.npoName)
+                print(self.myUser.npoName == volunteerOffer.npoName)
+                
+                self.editAndDeleteButtonState.isEnabled = false
+                self.editAndDeleteButtonState.isHidden = true
+                
                 if let user = self.myUser {
-                    if user.name == volunteerOffer.npoName {
+                    if user.npoName == volunteerOffer.npoName {
                         //編集削除のボタンを見えるようにして押せる状態にする
-                        self.editAndDeleteButtonState.isEnabled = true
-                        self.editAndDeleteButtonState.tintColor = UIColor.systemBlue
+                        self.editAndDeleteButtonState.isEnabled = true   //ボタン有効
+                        self.editAndDeleteButtonState.isHidden = false   //ボタン表示
+                        self.editAndDeleteButtonState.tintColor = UIColor.systemGreen
                     }
                 }
             case .failure(let error):

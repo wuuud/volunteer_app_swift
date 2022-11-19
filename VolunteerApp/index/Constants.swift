@@ -13,11 +13,11 @@ struct Constants {
     static let shared = Constants()
     private init() {}
     /* localhost */
-        let baseUrl = "https://volunteer-match-22.herokuapp.com"
-        let oauthUrl  = "https://volunteer-match-22.herokuapp.com/oauth/authorize"
-        let clientId = "11" //自分のクライアントのID
-        let clientSecret = "JDQmkezPcSkMEiB5QsI3kuZZiLHgkzhRDMgt4ApQ" //クライアントIDに対応したシークレット
-        let callbackUrlScheme = "volunteer_match_oauth"
-        let service = "volunteer_match_oauth"
-        let redirectUri = "volunteer_match_oauth://callback"
+    let baseUrl = ProcessInfo.processInfo.environment["BASE_URL"]!
+    let oauthUrl  = ProcessInfo.processInfo.environment["BASE_URL"]! + "/oauth/authorize"
+    let clientId = ProcessInfo.processInfo.environment["CLIENT_ID"]! //自分のクライアントのID
+    let clientSecret = ProcessInfo.processInfo.environment["CLIENT_SECRET"]! //クライアントIDに対応したシークレット
+    let callbackUrlScheme = "volunteer-match-oauth"
+    let service = "volunteer-match-oauth"
+    let redirectUri = "volunteer-match-oauth://callback"
 }

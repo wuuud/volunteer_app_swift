@@ -16,7 +16,6 @@ struct VolunteerOffer: Codable {
     let startDate: String
     let npoName: String
     let npoImageUrl: String
-    let isPublished: String
     
     enum CodingKeys:  String, CodingKey {
         case id
@@ -25,7 +24,5 @@ struct VolunteerOffer: Codable {
         case startDate = "start_date"
         case npoName = "npo_name"
         case npoImageUrl = "image_url"
-        case isPublished = "is_published"
-        //        case messages
     }
 }
