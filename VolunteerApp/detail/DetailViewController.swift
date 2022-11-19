@@ -92,15 +92,22 @@ class DetailViewController: UIViewController {
                 print(volunteerOffer.npoName)
                 print(self.myUser.npoName == volunteerOffer.npoName)
                 
-                self.editAndDeleteButtonState.isEnabled = false
-                self.editAndDeleteButtonState.isHidden = true
+                
+                
+//                後で解除
+//                self.editAndDeleteButtonState.isEnabled = false
+//                self.editAndDeleteButtonState.isHidden = true
                 
                 if let user = self.myUser {
                     if user.npoName == volunteerOffer.npoName {
+                        
+                        
+                        
+//                        後で解除
                         //編集削除のボタンを見えるようにして押せる状態にする
-                        self.editAndDeleteButtonState.isEnabled = true   //ボタン有効
-                        self.editAndDeleteButtonState.isHidden = false   //ボタン表示
-                        self.editAndDeleteButtonState.tintColor = UIColor.systemGreen
+//                        self.editAndDeleteButtonState.isEnabled = true   //ボタン有効
+//                        self.editAndDeleteButtonState.isHidden = false   //ボタン表示
+//                        self.editAndDeleteButtonState.tintColor = UIColor.systemGreen
                     }
                 }
             case .failure(let error):
