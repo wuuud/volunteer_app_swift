@@ -42,7 +42,8 @@ class IndexViewController: UIViewController {
     func requestIndex(){
         //URL、トークン、ヘッダーを用意
         let url = URL(string: consts.baseUrl + "/api/volunteer_offers")!
-        let token = LoadToken().loadAccessToken()  //LoadToken.swiftで定義 トークンがKeychainkら読み込まれる
+        let token = LoadToken.loadAccessToken()
+        //LoadToken.swiftで定義 トークンがKeychainkら読み込まれる
         /* ヘッダーはこの書き方でもOK  文字列””が多いとミスしやすい。互換が効くほうが良い。
          let headers: HTTPHeaders = [
          "Content-Type": "application/json",
@@ -50,11 +51,12 @@ class IndexViewController: UIViewController {
          "Authorization": "Bearer \(token)",
          ]
          */
-        //        print("ree")
+        print("😅😅😅requestIndex  loadAcxessToken😅😅😅")
+        print(token)
+
         let headers: HTTPHeaders = [
             .contentType("application/json"),
             .accept("application/json"),
-            //その中身がトークンだよ
             .authorization(bearerToken: token)
         ]
         //Alamofireでリクエスト
@@ -63,7 +65,9 @@ class IndexViewController: UIViewController {
             method: .get,
             encoding: JSONEncoding.default,
             headers: headers
-            
+//        ).responseJSON {JSON in
+//            print(JSON)
+//        }
         ).responseDecodable(of: Index.self) { response in
             switch response.result {
             case .success(let volunteerOffers):
@@ -81,12 +85,14 @@ class IndexViewController: UIViewController {
     //自分の情報取得(idとname)
     func getUser() {
         let url = URL(string: consts.baseUrl + "/api/user")!
-        let token = LoadToken().loadAccessToken()
+        let token = LoadToken.loadAccessToken()
         let headers: HTTPHeaders = [
             .authorization(bearerToken: token),
             .accept("application/json")
         ]
-        
+        print("😅😅😅getUser  loadAcxessToken😅😅😅")
+        print(token)
+
         AF.request(
             url,
             encoding: JSONEncoding.default,
@@ -149,3 +155,4 @@ extension IndexViewController: UITableViewDelegate {
         navigationController?.pushViewController(detailVC, animated: true)
     }
 }
+

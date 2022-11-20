@@ -11,6 +11,7 @@ import AuthenticationServices
 import Alamofire
 import KeychainAccess
 
+
 class LoginViewController: UIViewController {
     //7.oauth認証
     let consts = Constants.shared
@@ -49,9 +50,14 @@ class LoginViewController: UIViewController {
             case .success(let value):
                 let token = value.accessToken
                 //７.oauth認証
+                Task .detached { @MainActor in
+                    print("🤫transitionToIndex")
+                    self.transitionToIndex() //func transitionToIndex()
+                }
                 let keychain = Keychain(service: self.consts.service) //このアプリ用のキーチェーンを生成
-                keychain["access_token"] = token //トークンをキーチェーンに保存 キーは"access_token"
-                self.transitionToIndex() //func transitionToIndex()
+                keychain["token"] = token //トークンをキーチェーンに保存 キーは"access_token"
+                print("🙏🙏toekn🙏")
+                print(token)
             case .failure(let err):
                 print(err)
             }
@@ -75,9 +81,14 @@ class LoginViewController: UIViewController {
                 guard error == nil, let successURL = callback else { return }
                 let queryItems = URLComponents(string: successURL.absoluteString)?.queryItems
                 guard let code = queryItems?.filter({ $0.name == "code" }).first?.value else { return }
+                print("✨✨✨✨✨code✨✨✨✨✨")
                 print(code)
                 self.getAccessToken(code: code)
-                self.transitionToIndex()
+                print("✨✨✨✨✨token✨✨✨✨✨")
+                print((LoadToken()).loadAccessToken())
+//                Task .detached{@MainActor in
+//                    self.transitionToIndex()
+//                }
             }
         }
         //7.oauth認証
@@ -91,9 +102,11 @@ class LoginViewController: UIViewController {
     //次の画面に遷移する処理 ナビゲーションバーが自動で付き、ナビゲーションバーに戻るためのボタンも自動についた一覧画面(IndexViewController)を表示
     //アクセストークンを取得して保存までできた時や、アクセストークンをすでに持っていた時
     func transitionToIndex() {
-        let navigationController = self.storyboard?.instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
-        navigationController.modalPresentationStyle = .fullScreen
-        present(navigationController, animated: true)
+        Task .detached{@MainActor in
+            let navigationController = self.storyboard?.instantiateViewController(withIdentifier: "NavigationController") as! UINavigationController
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true)
+        }
     }
 }
 //7.oauth認証
@@ -103,3 +116,13 @@ extension LoginViewController: ASWebAuthenticationPresentationContextProviding {
         return self.view.window!
     }
 }
+
+
+
+
+
+
+
+
+
+
